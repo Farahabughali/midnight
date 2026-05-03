@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>حساب منتصف الليل الشرعي | قناة ثقافة إسلامية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0a2f3b 0%, #0a1a1f 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Tajawal', 'Amiri', system-ui, -apple-system, 'Cairo', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .card {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(210, 180, 140, 0.2);
+            overflow: hidden;
+        }
+
+        .hero {
+            background: #1e3b44;
+            padding: 1rem 1.5rem 1.2rem;
+            text-align: center;
+            color: #f9efcf;
+            border-bottom: 3px solid #e7b42c;
+            position: relative;
+        }
+
+        .channel-logo-circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 12px auto;
+            width: fit-content;
+        }
+
+        .channel-logo-circle img {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #e7b42c;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3), 0 0 0 3px rgba(231, 180, 44, 0.3);
+            background: white;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+        }
+
+        .channel-logo-circle img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.4), 0 0 0 4px rgba(231, 180, 44, 0.5);
+        }
+
+        .hero h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .content {
+            padding: 2rem 1.8rem;
+        }
+
+        .info-islamic {
+            background: #fef5e8;
+            padding: 1.2rem;
+            border-radius: 1.2rem;
+            margin-bottom: 2rem;
+            border-right: 6px solid #e7b42c;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #2c3e2f;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* صندوق الفتوى الجديد */
+        .fatwa-box {
+            background: #fef8e7;
+            border-right: 6px solid #b8860b;
+            padding: 1.3rem;
+            border-radius: 1.2rem;
+            margin: 1.8rem 0 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #2d2b1f;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+
+        .fatwa-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed #e7b42c;
+            padding-bottom: 0.5rem;
+        }
+
+        .fatwa-header span {
+            font-size: 1.6rem;
+        }
+
+        .fatwa-header h3 {
+            font-size: 1.2rem;
+            color: #1e3b44;
+            font-weight: 700;
+        }
+
+        .fatwa-text {
+            font-family: 'Amiri', 'Times New Roman', serif;
+            font-size: 1rem;
+            color: #2c3e2f;
+            text-align: justify;
+        }
+
+        .fatwa-text p {
+            margin-bottom: 0.8rem;
+        }
+
+        .fatwa-footer {
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: #b1621a;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 1.7rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #1e5344;
+            background: #eef4f0;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .time-input {
+            flex: 1;
+            min-width: 160px;
+            background: #ffffff;
+            border: 1.5px solid #cfddd5;
+            padding: 0.8rem 1rem;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-family: monospace;
+            font-weight: 600;
+            color: #1e3b44;
+            direction: ltr;
+            text-align: center;
+        }
+
+        .time-input:focus {
+            outline: none;
+            border-color: #e7b42c;
+            box-shadow: 0 0 0 2px #e7b42c40;
+        }
+
+        .button-calc {
+            background: #e7b42c;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e2a24;
+            border-radius: 60px;
+            margin: 1rem 0 1.6rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .button-calc:hover {
+            background: #d9a218;
+            transform: scale(0.98);
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #eef3f0, #fefaf2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1.2rem;
+            border: 1px solid #edd9b0;
+        }
+
+        .midnight-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #4a5b52;
+            font-weight: 500;
+        }
+
+        .midnight-time {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            color: #1a4d3e;
+            margin: 0.25rem 0;
+            background: #ffffffaa;
+            display: inline-block;
+            padding: 0.1rem 1.2rem;
+            border-radius: 80px;
+        }
+
+        .extra-note {
+            background: #e7b42c20;
+            padding: 0.7rem;
+            border-radius: 1rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #2f2d1e;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.7rem;
+            background: #fbf7ef;
+            color: #5a6b5e;
+            border-top: 1px solid #efebdd;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 500px) {
+            .content { padding: 1.5rem; }
+            .midnight-time { font-size: 2.3rem; }
+            .input-group { flex-direction: column; align-items: stretch; }
+            .input-group label { justify-content: center; }
+            .channel-logo-circle img { width: 85px; height: 85px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="hero">
+        <div class="channel-logo-circle">
+            <img src="thaqafa.png" 
+                 alt="شعار قناة ثقافة إسلامية - بذرة العلم - دائري"
+                 onerror="this.onerror=null; this.style.display='none'; document.getElementById('fallbackCircle').style.display='flex';">
+        </div>
+        <h1>
+            🌙 منتصف الليل <span>الشرعي</span>
+        </h1>
+    </div>
+
+    <div class="content">
+        <div class="info-islamic">
+            <strong>ما هو منتصف الليل بالطريقة الشرعية؟</strong><br>
+            ليس منتصف الليل هو الساعة 12 صباحًا كما يعتقد البعض، بل يُحسب بالوقت بين <strong>غروب الشمس (صلاة المغرب)</strong> و<strong>طلوع الفجر (صلاة الفجر)</strong>، ثم يُقسم الفرق على اثنين، ويُضاف إلى وقت المغرب.<br>
+            ⏰ مثال: لو كان المغرب 4:40 م والفجر التالي 5:02 ص → المدة 12س 22د → نصفها 6س 11د → منتصف الليل = 10:51 مساءً.
+        </div>
+
+        <div class="input-group">
+            <label>🕌 <i>صلاة المغرب</i> (اليوم)</label>
+            <input type="time" id="maghribInput" class="time-input" value="18:30">
+        </div>
+
+        <div class="input-group">
+            <label> 🕌 <i>صلاة الفجر</i> (الغد)</label>
+            <input type="time" id="fajrInput" class="time-input" value="05:20">
+        </div>
+
+        <button class="button-calc" id="calculateBtn">
+            احسب منتصف الليل الشرعي 
+        </button>
+
+        <div class="result-box" id="resultArea">
+            <div class="midnight-label"> وقت منتصف الليل الشرعي </div>
+            <div class="midnight-time" id="midnightDisplay">--:--</div>
+            <div class="extra-note" id="adviceText">
+                صلِّ العشاء قبل هذا الوقت 📿 (وهو آخر وقت العشاء في أرجح الأقوال)
+            </div>
+        </div>
+
+        <!-- ✅ إضافة فتوى ابن باز رحمه الله كما طلبت -->
+        <div class="fatwa-box">
+            <div class="fatwa-header">
+                <span>📜</span>
+                <h3>فتوى سماحة الشيخ عبد العزيز بن باز رحمه الله</h3>
+            </div>
+            <div class="fatwa-text">
+                <p>“آخر وقتها -أي: صلاة العشاء- نصف الليل، إذا انتصف الليل لم يجز التأخير إليه، لكن لو كان الإنسان ساهيًا أو نائمًا ثم استيقظ يصلي حين يستيقظ ولو في النصف الأخير لقول النبي ﷺ: <strong>«من نام عن الصلاة أو نسيها فليصلها إذا ذكرها لا كفارة لها إلا ذلك»</strong>، لكن ليس له أن يؤخرها عمدًا، يقول النبي ﷺ: <strong>«ووقت العشاء إلى نصف الليل»</strong> فليس للمؤمن ولا للمؤمنة أن يؤخرا صلاة العشاء إلى نصف الليل.</p>
+                <p>والرجل يصلي مع الناس في المساجد وليس له أن يصلي في بيته ولا يؤخر بل يلزمه أن يصلي مع الناس في المساجد إذا كان صحيحًا، أما إذا كان مريضًا فهو معذور يصلي في بيته متى شاء قبل نصف الليل.”</p>
+            </div>
+            <div class="fatwa-footer">
+                — الشيخ ابن باز رحمه الله
+            </div>
+        </div>
+
+        <div class="extra-note" style="margin-top: 0.8rem; background:#f5efe3;">
+            💡 ملاحظة: الوقت المعروض هو منتصف الليل الفقهي. يُستحب للمسلم أن يُصلي العشاء قبله ولا يؤخرها بغير عذر.
+        </div>
+    </div>
+    <div class="footer">
+        <span>🕌 حساب دقيق وفق المدة بين المغرب والفجر (الغد)</span>
+        <span> حقوق الأداة محفوظة لقناة ثقافة إسلامية</span>
+    </div>
+</div>
+
+<script>
+    function calculateMidnight(maghribTimeStr, fajrTimeStr) {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+        const day = today.getDate();
+
+        let maghribDate = new Date(year, month, day);
+        let fajrDate = new Date(year, month, day);
+
+        const [maghribHour, maghribMinute] = maghribTimeStr.split(':').map(Number);
+        const [fajrHour, fajrMinute] = fajrTimeStr.split(':').map(Number);
+
+        maghribDate.setHours(maghribHour, maghribMinute, 0, 0);
+        fajrDate.setHours(fajrHour, fajrMinute, 0, 0);
+
+        if (fajrDate <= maghribDate) {
+            fajrDate.setDate(fajrDate.getDate() + 1);
+        }
+
+        const diffMs = fajrDate - maghribDate;
+        const totalMinutes = diffMs / (1000 * 60);
+
+        if (totalMinutes <= 0) {
+            return { success: false, message: "تأكد من أوقات المغرب والفجر (الفجر يجب أن يكون لليوم التالي)" };
+        }
+
+        const halfMinutes = totalMinutes / 2;
+        const midnightDate = new Date(maghribDate.getTime() + halfMinutes * 60 * 1000);
+
+        let hours = midnightDate.getHours();
+        let minutes = midnightDate.getMinutes();
+        const period = (hours >= 12) ? "مساءً" : "صباحاً";
+        let displayHours = hours % 12;
+        if (displayHours === 0) displayHours = 12;
+        const formattedTime = `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+        const hours24 = hours.toString().padStart(2, '0');
+        const minutes24 = minutes.toString().padStart(2, '0');
+        const time24 = `${hours24}:${minutes24}`;
+
+        return {
+            success: true,
+            time12: formattedTime,
+            time24: time24,
+        };
+    }
+
+    function updateMidnightResult() {
+        const maghribValue = document.getElementById('maghribInput').value;
+        const fajrValue = document.getElementById('fajrInput').value;
+        const midnightSpan = document.getElementById('midnightDisplay');
+        const adviceDiv = document.getElementById('adviceText');
+
+        if (!maghribValue || !fajrValue) {
+            midnightSpan.innerText = "❗ خطأ";
+            adviceDiv.innerHTML = "يرجى إدخال وقت المغرب ووقت الفجر بشكل صحيح.";
+            return;
+        }
+
+        const result = calculateMidnight(maghribValue, fajrValue);
+
+        if (!result.success) {
+            midnightSpan.innerText = "⚠️ غير صحيح";
+            adviceDiv.innerHTML = result.message;
+            return;
+        }
+
+        midnightSpan.innerText = result.time12 + ` (${result.time24})`;
+        adviceDiv.innerHTML = `🌙 صلِّ صلاة العشاء قبل الساعة ${result.time12} ⏰<br> هذا هو منتصف الليل الشرعي، وهو آخر وقت لصلاة العشاء في المذهب المعتمد. | 🕌 قناة ثقافة إسلامية 🕌`;
+    }
+
+    const btn = document.getElementById('calculateBtn');
+    btn.addEventListener('click', updateMidnightResult);
+
+    window.addEventListener('DOMContentLoaded', () => {
+        updateMidnightResult();
+        const maghribField = document.getElementById('maghribInput');
+        const fajrField = document.getElementById('fajrInput');
+        function autoUpdate() { updateMidnightResult(); }
+        maghribField.addEventListener('change', autoUpdate);
+        fajrField.addEventListener('change', autoUpdate);
+        maghribField.addEventListener('input', autoUpdate);
+        fajrField.addEventListener('input', autoUpdate);
+    });
+</script>
+</body>
+</html>
