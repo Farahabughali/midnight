@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>حساب منتصف الليل الشرعي | قناة ثقافة إسلامية</title>
+    <title>حساب منتصف الليل الشرعي ووقت قيام الليل | قناة ثقافة إسلامية</title>
     <style>
         * {
             margin: 0;
@@ -90,7 +90,6 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
-        /* صندوق الفتوى الجديد */
         .fatwa-box {
             background: #fef8e7;
             border-right: 6px solid #b8860b;
@@ -101,7 +100,6 @@
             line-height: 1.8;
             color: #2d2b1f;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s;
         }
 
         .fatwa-header {
@@ -218,7 +216,17 @@
             border: 1px solid #edd9b0;
         }
 
-        .midnight-label {
+        .qiyam-box {
+            background: linear-gradient(135deg, #eef3f0, #fefaf2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+            border: 1px solid #b8860b;
+            background: #fefcf5;
+        }
+
+        .midnight-label, .qiyam-label {
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -226,8 +234,8 @@
             font-weight: 500;
         }
 
-        .midnight-time {
-            font-size: 3rem;
+        .midnight-time, .qiyam-time {
+            font-size: 2.5rem;
             font-weight: 800;
             font-family: 'Courier New', monospace;
             color: #1a4d3e;
@@ -262,7 +270,7 @@
 
         @media (max-width: 500px) {
             .content { padding: 1.5rem; }
-            .midnight-time { font-size: 2.3rem; }
+            .midnight-time, .qiyam-time { font-size: 1.8rem; }
             .input-group { flex-direction: column; align-items: stretch; }
             .input-group label { justify-content: center; }
             .channel-logo-circle img { width: 85px; height: 85px; }
@@ -279,7 +287,7 @@
                  onerror="this.onerror=null; this.style.display='none'; document.getElementById('fallbackCircle').style.display='flex';">
         </div>
         <h1>
-            🌙 منتصف الليل <span>الشرعي</span>
+            🌙 منتصف الليل <span>الشرعي</span> وقيام الليل
         </h1>
     </div>
 
@@ -301,7 +309,7 @@
         </div>
 
         <button class="button-calc" id="calculateBtn">
-            احسب منتصف الليل الشرعي 
+            احسب منتصف الليل ووقت قيام الليل
         </button>
 
         <div class="result-box" id="resultArea">
@@ -312,7 +320,15 @@
             </div>
         </div>
 
-        <!-- ✅ إضافة فتوى ابن باز رحمه الله كما طلبت -->
+        <!-- صندوق جديد لوقت قيام الليل (الثلث الأخير) -->
+        <div class="qiyam-box" id="qiyamArea">
+            <div class="qiyam-label"> 🌙 وقت قيام الليل (الثلث الأخير) 🌙</div>
+            <div class="qiyam-time" id="qiyamDisplay">--:--</div>
+            <div class="extra-note" style="margin-top:0.5rem;">
+                📿 يُستحب القيام في هذا الوقت، وهو آخر الليل. قال النبي ﷺ: "ينزل ربنا تبارك وتعالى كل ليلة إلى السماء الدنيا حين يبقى ثلث الليل الآخر..."
+            </div>
+        </div>
+
         <div class="fatwa-box">
             <div class="fatwa-header">
                 <span>📜</span>
@@ -328,7 +344,7 @@
         </div>
 
         <div class="extra-note" style="margin-top: 0.8rem; background:#f5efe3;">
-            💡 ملاحظة: الوقت المعروض هو منتصف الليل الفقهي. يُستحب للمسلم أن يُصلي العشاء قبله ولا يؤخرها بغير عذر.
+            💡 ملاحظة: وقت قيام الليل هنا هو بداية الثلث الأخير من الليل (أفضل وقت للتهجد). يُحسب بقسمة المدة بين المغرب والفجر على 3، ثم يُضاف إلى وقت المغرب (للحصول على بداية الثلث الأخير) أو يُطرح من الفجر.
         </div>
     </div>
     <div class="footer">
@@ -338,7 +354,7 @@
 </div>
 
 <script>
-    function calculateMidnight(maghribTimeStr, fajrTimeStr) {
+    function calculateTimes(maghribTimeStr, fajrTimeStr) {
         const today = new Date();
         const year = today.getFullYear();
         const month = today.getMonth();
@@ -361,61 +377,78 @@
         const totalMinutes = diffMs / (1000 * 60);
 
         if (totalMinutes <= 0) {
-            return { success: false, message: "تأكد من أوقات المغرب والفجر (الفجر يجب أن يكون لليوم التالي)" };
+            return { success: false, message: "تأكد من أوقات المغرب والفجر" };
         }
 
+        // 1. منتصف الليل (نصف المدة)
         const halfMinutes = totalMinutes / 2;
         const midnightDate = new Date(maghribDate.getTime() + halfMinutes * 60 * 1000);
-
-        let hours = midnightDate.getHours();
-        let minutes = midnightDate.getMinutes();
-        const period = (hours >= 12) ? "مساءً" : "صباحاً";
-        let displayHours = hours % 12;
-        if (displayHours === 0) displayHours = 12;
-        const formattedTime = `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
-        const hours24 = hours.toString().padStart(2, '0');
-        const minutes24 = minutes.toString().padStart(2, '0');
-        const time24 = `${hours24}:${minutes24}`;
-
+        
+        // 2. الثلث الأخير من الليل (وقت قيام الليل)
+        const oneThirdMinutes = totalMinutes / 3;
+        // الثلث الأخير يبدأ بعد مرور ثلثي الليل
+        const startOfLastThird = new Date(maghribDate.getTime() + (2 * oneThirdMinutes) * 60 * 1000);
+        
+        // تنسيق الوقت
+        function formatTime(date) {
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            const period = (hours >= 12) ? "مساءً" : "صباحاً";
+            let displayHours = hours % 12;
+            if (displayHours === 0) displayHours = 12;
+            const formatted = `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+            const hours24 = hours.toString().padStart(2, '0');
+            const minutes24 = minutes.toString().padStart(2, '0');
+            return { time12: formatted, time24: `${hours24}:${minutes24}` };
+        }
+        
+        const midnight = formatTime(midnightDate);
+        const qiyamStart = formatTime(startOfLastThird);
+        
         return {
             success: true,
-            time12: formattedTime,
-            time24: time24,
+            midnight12: midnight.time12,
+            midnight24: midnight.time24,
+            qiyam12: qiyamStart.time12,
+            qiyam24: qiyamStart.time24
         };
     }
 
-    function updateMidnightResult() {
+    function updateAllResults() {
         const maghribValue = document.getElementById('maghribInput').value;
         const fajrValue = document.getElementById('fajrInput').value;
         const midnightSpan = document.getElementById('midnightDisplay');
+        const qiyamSpan = document.getElementById('qiyamDisplay');
         const adviceDiv = document.getElementById('adviceText');
 
         if (!maghribValue || !fajrValue) {
             midnightSpan.innerText = "❗ خطأ";
+            qiyamSpan.innerText = "❗ خطأ";
             adviceDiv.innerHTML = "يرجى إدخال وقت المغرب ووقت الفجر بشكل صحيح.";
             return;
         }
 
-        const result = calculateMidnight(maghribValue, fajrValue);
-
+        const result = calculateTimes(maghribValue, fajrValue);
         if (!result.success) {
             midnightSpan.innerText = "⚠️ غير صحيح";
+            qiyamSpan.innerText = "⚠️ غير صحيح";
             adviceDiv.innerHTML = result.message;
             return;
         }
 
-        midnightSpan.innerText = result.time12 + ` (${result.time24})`;
-        adviceDiv.innerHTML = `🌙 صلِّ صلاة العشاء قبل الساعة ${result.time12} ⏰<br> هذا هو منتصف الليل الشرعي، وهو آخر وقت لصلاة العشاء في المذهب المعتمد. | 🕌 قناة ثقافة إسلامية 🕌`;
+        midnightSpan.innerText = `${result.midnight12} (${result.midnight24})`;
+        qiyamSpan.innerText = `${result.qiyam12} (${result.qiyam24})`;
+        adviceDiv.innerHTML = `🌙 صلِّ صلاة العشاء قبل الساعة ${result.midnight12} ⏰<br> هذا هو منتصف الليل الشرعي، وهو آخر وقت لصلاة العشاء في المذهب المعتمد. | 🕌 قناة ثقافة إسلامية 🕌`;
     }
 
     const btn = document.getElementById('calculateBtn');
-    btn.addEventListener('click', updateMidnightResult);
+    btn.addEventListener('click', updateAllResults);
 
     window.addEventListener('DOMContentLoaded', () => {
-        updateMidnightResult();
+        updateAllResults();
         const maghribField = document.getElementById('maghribInput');
         const fajrField = document.getElementById('fajrInput');
-        function autoUpdate() { updateMidnightResult(); }
+        function autoUpdate() { updateAllResults(); }
         maghribField.addEventListener('change', autoUpdate);
         fajrField.addEventListener('change', autoUpdate);
         maghribField.addEventListener('input', autoUpdate);
